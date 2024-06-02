@@ -34,6 +34,11 @@ Create Post > MethodPost : localhost:8081/api/posts
 Update Post > MethodUpdate : localhost:8081/api/posts/{$id}
 Delete Post > MethodDelete : localhost:8081/api/posts/{$id}
 GetbyID Post > MethodGet : localhost:8081/api/posts/{$id}
+
+Create Tag > MethodPost : localhost:8081/api/tag
+Update Tag > MethodUpdate : localhost:8081/api/tag/{$id}
+Delete Tag > MethodDelete : localhost:8081/api/tag/{$id}
+GetbyID Tag > MethodGet : localhost:8081/api/tag/{$id}
 ```
 ## JSON
 
