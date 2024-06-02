@@ -70,13 +70,17 @@ func InsertPost(db *sql.DB, post model.Post) (int, error) {
 		return 0, err
 	}
 
+	if post.Status == "" {
+		post.Status = "Draft"
+	}
+
 	// query Insert post after get all id
 	postQuery := `
-		INSERT INTO post (title, content, status) 
-		VALUES ($1, $2, $3) 
+		INSERT INTO post (title, content, status, publishdate) 
+		VALUES ($1, $2, $3, $4) 
 		RETURNING id
 	`
-	row := db.QueryRow(postQuery, post.Title, post.Content, post.Status)
+	row := db.QueryRow(postQuery, post.Title, post.Content, post.Status, post.PublishDate)
 	var postID int
 	err = row.Scan(&postID)
 	if err != nil {
