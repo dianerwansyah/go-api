@@ -29,18 +29,15 @@ func main() {
 	}
 
 	for _, model := range modelsToCreate {
-		log.Printf("Creating table for model %T...\n", model)
 		err := helper.CreateTableFromModel(db, model)
 		if err != nil {
 			log.Fatalf("Error setting up table for model %T: %v", model, err)
 		}
-		log.Printf("Successfully created table for model %T.\n", model)
 
 		err = helper.UpdateTableFromModel(db, model)
 		if err != nil {
 			log.Fatalf("Error updating table for model %T: %v", model, err)
 		}
-		log.Printf("Successfully updated table for model %T.\n", model)
 	}
 
 	// Array of pairs for join tables
@@ -75,6 +72,32 @@ func main() {
 			logic.DeletePost(db, postID)(w, r)
 		case http.MethodGet:
 			logic.GetPostByID(db, postID)(w, r)
+		default:
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})
+
+	http.HandleFunc("/api/tag", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			logic.CreatePost(db)(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})
+
+	http.HandleFunc("/api/tag/", func(w http.ResponseWriter, r *http.Request) {
+		postID, err := getIDFromURL(r)
+		if err != nil {
+			http.Error(w, "Invalid tag ID", http.StatusBadRequest)
+			return
+		}
+		switch r.Method {
+		case http.MethodPut:
+			logic.UpdateTag(db, postID)(w, r)
+		case http.MethodDelete:
+			logic.DeleteTag(db, postID)(w, r)
+		case http.MethodGet:
+			logic.GetTagByID(db, postID)(w, r)
 		default:
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}

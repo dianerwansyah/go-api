@@ -4,6 +4,7 @@ import (
 	"api-go/model"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/lib/pq"
@@ -68,6 +69,13 @@ func InsertPost(db *sql.DB, post model.Post) (int, error) {
 	}
 	if err := rows.Err(); err != nil {
 		return 0, err
+	}
+
+	for _, label := range labels {
+		if _, ok := idMap[label]; !ok {
+			// Jika label tidak memiliki ID dalam database, berikan pesan kesalahan
+			return 0, fmt.Errorf("Label '%s' tidak ditemukan dalam database", label)
+		}
 	}
 
 	if post.Status == "" {
