@@ -1,5 +1,9 @@
 # Go example projects go-api with PostgreSQL
 
+## GO VERSION
+go version go1.19.4
+
+
 ## Clone the project
 
 ```
@@ -45,6 +49,13 @@ GetbyID Post > MethodGet : localhost:8081/api/posts/{$id}
 		{
 			"label": "API"
 		}
-	]
+	],
+	"status": "Draft",
+	"publish_dte": "2024-06-02T00:00:00Z"
+}
+
+//Create Tag
+{
+	"label": "Go 1.19.4",
 }
 ```
